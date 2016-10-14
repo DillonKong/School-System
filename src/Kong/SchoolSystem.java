@@ -8,13 +8,13 @@ public class SchoolSystem {
 	static ArrayList <Student> studRecs = new ArrayList<Student> ();
 	static Scanner scan = new Scanner (System.in);
 
-	public static void main (String [] args)
+	public static void main (String [] args) throws InvalidInputException
 	{
 		int mainMenu = 0, printStuNum = 0, removeStu = 0;
 		mainScreen (mainMenu, printStuNum, removeStu);
 	}
 
-	public static void mainScreen (int menu, int print, int remove)
+	public static void mainScreen (int menu, int print, int remove) throws InvalidInputException
 	{
 		System.out.println("1. Enter new student \n2. Print student \n3. Print all students \n4. Remove student \n10. Quit");
 		menu = scan.nextInt();
@@ -42,7 +42,7 @@ public class SchoolSystem {
 			System.exit(0);
 	}
 
-	public static void newStudent ()
+	public static void newStudent () throws InvalidInputException
 	{
 		String input;
 		studRecs.add(new Student ());
@@ -107,7 +107,7 @@ public class SchoolSystem {
 		mainScreen(0, 0, 0);
 	}
 
-	public static void printStudent (int stuNum)
+	public static void printStudent (int stuNum) throws InvalidInputException
 	{
 		System.out.println("Student #" + stuNum);
 		System.out.println("First Name: " + studRecs.get(stuNum-1).getFirstName());
@@ -121,7 +121,7 @@ public class SchoolSystem {
 		System.out.println("Birth Date: " + studRecs.get(stuNum-1).getBirthday());
 		mainScreen(0, 0, 0);
 	}
-	public static void printAllStudents ()
+	public static void printAllStudents () throws InvalidInputException
 	{
 		for (int i = 0; i < studRecs.size(); i ++)
 		{
@@ -139,7 +139,7 @@ public class SchoolSystem {
 		}
 		mainScreen(0, 0, 0);
 	}
-	public static void removeStudent (int removeStu)
+	public static void removeStudent (int removeStu) throws InvalidInputException
 	{
 		studRecs.remove(removeStu - 1);
 		mainScreen(0, 0, 0);
