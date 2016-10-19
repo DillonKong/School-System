@@ -1,22 +1,30 @@
 package Kong;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class SchoolSystem {
 
 	static ArrayList <Student> studRecs = new ArrayList<Student> ();
-	static Scanner scan = new Scanner (System.in);
 
-	public static void main (String [] args) throws InvalidInputException
+	public static void main (String [] args) throws InvalidInputException, IOException
 	{
 		int mainMenu = 0, printStuNum = 0, removeStu = 0;
 		mainScreen (mainMenu, printStuNum, removeStu);
 	}
 
-	public static void mainScreen (int menu, int print, int remove) throws InvalidInputException
+	public static void mainScreen (int menu, int print, int remove) throws InvalidInputException, IOException
 	{
-		System.out.println("1. Enter new student \n2. Print student \n3. Print all students \n4. Remove student \n10. Quit");
+		@SuppressWarnings("resource")
+		Scanner scan = new Scanner(System.in);
+
+		System.out.println("1. Enter new student \n2. Print student \n3. Print all students \n4. Remove student  \n5. Save \n10. Quit");
 		menu = scan.nextInt();
 		scan.nextLine();
 
@@ -38,78 +46,75 @@ public class SchoolSystem {
 			remove = scan.nextInt();
 			removeStudent(remove);
 		}
+		else if (menu == 5)
+		{
+			saveStudents();
+		}
 		else if (menu == 10)
 			System.exit(0);
 	}
 
-	public static void newStudent () throws InvalidInputException
+	public static void newStudent () throws InvalidInputException, IOException
 	{
-		String input;
-		studRecs.add(new Student ());
-		System.out.println("First Name:");
-		studRecs.get(studRecs.size() - 1).setFirstName(scan.nextLine());
+		@SuppressWarnings("resource")
+		Scanner scan = new Scanner (System.in);
+		String input, fName, lName, address, city, province, postalCode, phoneNumber, bDay;
+		
+		studRecs.trimToSize();
+		
+		System.out.println("First Name:");		
+		fName = scan.nextLine();
 
 		System.out.println("Last Name: ");
-		studRecs.get(studRecs.size() - 1).setLastName(scan.nextLine());
-
-		System.out.println("Student Number: (12345679)");
-		input = scan.nextLine();
-		while (!studRecs.get(studRecs.size()-1).trySetStuNum(input))
-		{
-			System.out.println("Please input a valid student number");
-			input = scan.nextLine();
-		}
-		studRecs.get(studRecs.size() - 1).setStuNum(input);
+		lName = scan.nextLine();
 
 		System.out.println("Address: ");
 		input = scan.nextLine();
-		while (!studRecs.get(studRecs.size()-1).trySetAddress(input))
+		while (!Student.trySetAddress (input))
 		{
-			System.out.println("Please print an address");
 			input = scan.nextLine();
 		}
-		studRecs.get(studRecs.size() - 1).setAddress(input);
+		address = input;
 
 		System.out.println("City: ");
-		studRecs.get(studRecs.size() - 1).setCity(scan.nextLine());
+		city = scan.nextLine();
 
 		System.out.println("Province: ");
-		studRecs.get(studRecs.size() - 1).setProvince(scan.nextLine());
+		province = scan.nextLine();
 
 		System.out.println("Postalcode: ");
 		input = scan.nextLine();
-		while (!studRecs.get(studRecs.size()-1).trySetPostalCode(input))
+		while (!Student.trySetPostalCode(input))
 		{
-			System.out.println("Please print a postal code");
 			input = scan.nextLine(); 
 		}
-		studRecs.get(studRecs.size() - 1).setPostalCode(input);
+		postalCode = input;
 
 		System.out.println("Phone Number: (641-123-4567) ");
 		input = scan.nextLine();
-		while (!studRecs.get(studRecs.size()-1).trySetNumber(input))
+		while (!Student.trySetNumber(input))
 		{
-			System.out.println("Please print a postal code");
-			input = scan.nextLine(); 
+			input = scan.nextLine();
 		}
-		studRecs.get(studRecs.size() - 1).setNumber(input);
+		phoneNumber = input;
 
 		System.out.println("Birthday (DD/MM/YYYY): ");
 		input = scan.nextLine();
-		while (!studRecs.get(studRecs.size()-1).trySetBirthdate(input))
+		while (Student.trySetBirthdate(input))
 		{
-			System.out.println("Please print a Birthday");
 			input = scan.nextLine(); 
 		}
-		studRecs.get(studRecs.size() - 1).setBirthday(input);
+		bDay = input;
+
+		studRecs.add(new Student (fName, lName, bDay,  city, phoneNumber, postalCode, province, address));
 
 		System.out.println("COMPLETE");
 		mainScreen(0, 0, 0);
 	}
 
-	public static void printStudent (int stuNum) throws InvalidInputException
+	public static void printStudent (int stuNum) throws InvalidInputException, IOException
 	{
-		System.out.println("Student #" + stuNum);
+		System.out.println("Student id" + studRecs.get(stuNum - 1).getStudentId());
 		System.out.println("First Name: " + studRecs.get(stuNum-1).getFirstName());
 		System.out.println("Last Name: " + studRecs.get(stuNum-1).getLastName());
 		System.out.println("Student Number: " + studRecs.get(stuNum-1).getStuNum());
@@ -121,8 +126,11 @@ public class SchoolSystem {
 		System.out.println("Birth Date: " + studRecs.get(stuNum-1).getBirthday());
 		mainScreen(0, 0, 0);
 	}
-	public static void printAllStudents () throws InvalidInputException
+	public static void printAllStudents () throws InvalidInputException, IOException
 	{
+		File f = new File ("student_data_base");
+		BufferedReader fbr = new BufferedReader (new FileReader (f));
+		
 		for (int i = 0; i < studRecs.size(); i ++)
 		{
 			System.out.println("Student #" + i + 1);
@@ -139,9 +147,29 @@ public class SchoolSystem {
 		}
 		mainScreen(0, 0, 0);
 	}
-	public static void removeStudent (int removeStu) throws InvalidInputException
+	public static void removeStudent (int removeStu) throws InvalidInputException, IOException
 	{
 		studRecs.remove(removeStu - 1);
 		mainScreen(0, 0, 0);
+	}
+
+	public static void saveStudents () throws IOException
+	{
+		File f = new File ("student_data_base");
+		FileOutputStream fileOutputStream = new FileOutputStream (f);
+		@SuppressWarnings("resource")
+		PrintStream fps = new PrintStream (fileOutputStream);
+
+		if (!f.exists())
+		{
+			f.createNewFile();
+		}
+		
+		for (int i = 0; i < studRecs.size() - 1; i ++)
+		{
+			fps.println(studRecs.get(i).getStudentId() + " / ");
+			fps.print(studRecs.get(i).toString() + " / ");
+		}
+		fps.println(studRecs.get(studRecs.size() - 1).getStudentId());
 	}
 }

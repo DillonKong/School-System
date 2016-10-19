@@ -1,223 +1,36 @@
 package Kong;
 
-
 public class Student {
 
 	static long stuId = 324000000;
 	private String firstName, lastName, streetAddress, city, province, postalCode, birthDate, stuNum, phoneNumber;
 
-	public Student() throws InvalidInputException
-
+	public Student() 
 	{
-		try {
-			setBirthday("0/0/0");
-		} catch (InvalidInputException e)
-		{
-			e.printStackTrace();
-		}
+		
+	}
+	public Student(String firstName, String lastName, String birthDate, String city, String phoneNumber, String postalCode, String province, String streetAddress) throws InvalidInputException 
+	{
+		setStudentId (stuId);
+		setBirthday(birthDate);
 		setFirstName("");
 		setLastName("");
 		setCity("");
-		setProvince("");
-
-		setNumber("");
-		try {
-			setPostalCode("A1A 1A1");
-		} catch (InvalidInputException e)
-		{
-			e.printStackTrace();
-		}
-		try {
-			setAddress("");
-		} catch (InvalidInputException e)
-		{
-			e.printStackTrace();
-		}	
-		try {
-			setBirthday("");
-		} catch (InvalidInputException e)
-		{
-			e.printStackTrace();
-		}
+		setNumber(phoneNumber);
+		setPostalCode(postalCode);
+		setAddress(streetAddress);
 	}
-	public Student(String firstName) throws InvalidInputException
 
+	public void setStudentId (long stuId)
 	{
-		try {
-			setBirthday("");
-		} catch (InvalidInputException e)
-		{
-			e.printStackTrace();
-		}
-		setFirstName("");
-		setLastName("");
-		setCity("");
-		setProvince("");
-
-		setNumber("");
-		try {
-			setPostalCode("");
-		} catch (InvalidInputException e)
-		{
-			e.printStackTrace();
-		}
-		try {
-			setAddress("");
-		} catch (InvalidInputException e)
-		{
-			e.printStackTrace();
-		}	
-		try {
-			setBirthday("");
-		} catch (InvalidInputException e)
-		{
-			e.printStackTrace();
-		}
+		Student.stuId = stuId ++;
+		
 	}
-	public Student(String firstName, String lastName) throws InvalidInputException
-
+	public String getStudentId ()
 	{
-		setBirthday("");
-		setFirstName("");
-		setLastName("");
-		setCity("");
-
-		setNumber("");
-		setPostalCode("");
-		setAddress("");	
-		setBirthday("");
-
-
+		return this.getStudentId();
 	}
-	public Student(String firstName, String lastName, String birthDate) throws InvalidInputException
-	{
-		if (trySetBirthdate(birthDate))
-		{
-			setBirthday(birthDate);
-		}
-		setFirstName("");
-		setLastName("");
-		setCity("");
-		setNumber("");
-		setPostalCode("");
-		setAddress("");
-
-	}
-	public Student(String firstName, String lastName, String birthDate, String city) throws InvalidInputException
-	{
-		if (trySetBirthdate(birthDate))
-		{
-			setBirthday(birthDate);
-		}
-		setFirstName("");
-		setLastName("");
-		setCity("");
-		setNumber("");
-		setPostalCode("");
-		setAddress("");
-
-
-	}
-	public Student(String firstName, String lastName, String birthDate, String city, String phoneNumber) throws InvalidInputException
-	{
-		if (trySetBirthdate(birthDate))
-		{
-			setBirthday(birthDate);
-		}
-		setFirstName("");
-		setLastName("");
-		setCity("");
-
-		if (trySetNumber(phoneNumber))
-		{
-			setNumber(phoneNumber);
-		}
-		setPostalCode("");
-		setAddress("");
-	}
-	public Student(String firstName, String lastName, String birthDate, String city, String phoneNumber, String postalCode) throws InvalidInputException
-	{
-		if (trySetBirthdate(birthDate))
-		{
-			setBirthday(birthDate);
-		}
-		setFirstName("");
-		setLastName("");
-		setCity("");
-		setProvince("");
-
-		if (trySetNumber(phoneNumber))
-		{
-			setNumber(phoneNumber);
-		}
-
-		if (trySetPostalCode(postalCode))
-		{
-			setPostalCode(postalCode);
-		}
-		try {
-			setBirthday("");
-		} catch (InvalidInputException e)
-		{
-			e.printStackTrace();
-		}
-		try {
-			setAddress("");
-		} catch (InvalidInputException e)
-		{
-			e.printStackTrace();
-		}
-
-	}
-	public Student(String firstName, String lastName, String birthDate, String city, String phoneNumber, String postalCode, String province) throws InvalidInputException
-	{
-		if (trySetBirthdate(birthDate))
-		{
-			setBirthday(birthDate);
-		}
-		setFirstName("");
-		setLastName("");
-		setCity("");
-		setProvince("");
-
-		if (trySetNumber(phoneNumber))
-		{
-			setNumber(phoneNumber);
-		}
-
-		if (trySetPostalCode(postalCode))
-		{
-			setPostalCode(postalCode);
-		}
-		setAddress("");
-
-	}
-	public Student(String firstName, String lastName, String birthDate, String city, String phoneNumber, String postalCode, String province, String streetAddress)throws InvalidInputException 
-	{
-		if (trySetBirthdate(birthDate))
-		{
-			setBirthday(birthDate);
-		}
-		setFirstName("");
-		setLastName("");
-		setCity("");
-
-		if (trySetNumber(phoneNumber))
-		{
-			setNumber(phoneNumber);
-		}
-
-		if (trySetPostalCode(postalCode))
-		{
-			setPostalCode(postalCode);
-		}
-
-		if (trySetAddress(streetAddress))	
-		{
-			setAddress(streetAddress);
-		}
-	}
-
+	
 	public void setFirstName (String fName){
 		this.firstName = fName;
 	}
@@ -232,11 +45,11 @@ public class Student {
 		return this.lastName;
 	}
 
-	public void setAddress (String address) throws InvalidInputException
+	public void setAddress (String address)
 	{
 		if (trySetAddress (address))
 		{
-			throw new InvalidInputException("Invalid Street Address.");
+			System.out.println("Input another address");
 		}
 		this.streetAddress = address;
 	}
@@ -298,7 +111,7 @@ public class Student {
 		return this.stuNum;
 	}
 
-	public Boolean trySetAddress(String address)
+	public static Boolean trySetAddress(String address)
 	{
 		char [] charStrNum = address.split(" ") [0].toCharArray();
 		for (int i = 0; i < charStrNum.length; i ++)
@@ -311,7 +124,7 @@ public class Student {
 		return true;
 	}
 
-	public Boolean trySetPostalCode (String pCode)
+	public static Boolean trySetPostalCode (String pCode)
 	{
 		if (pCode.length() == 6)
 		{
@@ -364,7 +177,7 @@ public class Student {
 		}
 		return true;
 	}
-	public Boolean trySetNumber (String phoneNum)
+	public static Boolean trySetNumber (String phoneNum)
 	{
 		char [] charPhoneNumber = phoneNum.split("-") [0].toCharArray();
 		if (! Character.isDigit(charPhoneNumber[0]) && Character.isDigit(charPhoneNumber[1]) && Character.isDigit(charPhoneNumber[2]) && charPhoneNumber.length > 12)
@@ -373,11 +186,11 @@ public class Student {
 		}
 		return true;
 	}
-	public Boolean trySetBirthdate (String bDay)
+	public static Boolean trySetBirthdate (String bDay)
 	{
 		char [] charBDay= bDay.split("/")[0].toCharArray();
 
-		if (! Character.isDigit(charBDay [0]) && ! Character.isDigit(charBDay [1]) && ! Character.isDigit(charBDay[2]))
+		if (! Character.isDigit(charBDay [0]) &&  Character.isDigit(charBDay [1]) &&  Character.isDigit(charBDay[2]))
 		{
 			return false;
 		}
@@ -392,5 +205,9 @@ public class Student {
 			return false;
 		}
 		return true;
+	}
+	public String toString()
+	{
+		return firstName + " / " +  lastName + " / " + streetAddress + " / " + city + " / " + province + " / " + postalCode + " / " + birthDate + " / " + stuNum + " / " + phoneNumber;
 	}
 }
