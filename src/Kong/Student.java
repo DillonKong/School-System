@@ -3,35 +3,42 @@ package Kong;
 public class Student {
 
 	static long stuId = 324000000;
-	private String firstName, lastName, streetAddress, city, province, postalCode, birthDate, stuNum, phoneNumber;
+	private String firstName, lastName, streetAddress, city, postalCode, birthDate, stuNum, phoneNumber;
+	enumProvince province;
 
 	public Student() 
 	{
-		
+
 	}
 	public Student(String firstName, String lastName, String birthDate, String city, String phoneNumber, String postalCode, String province, String streetAddress) throws InvalidInputException 
 	{
 		setStudentId (stuId);
-		setBirthday(birthDate);
-		setFirstName("");
-		setLastName("");
+		trySetBirthday(birthDate);
+		trySetFirstName(firstName);
+		trySetLastName(lastName);
 		setCity("");
-		setNumber(phoneNumber);
-		setPostalCode(postalCode);
-		setAddress(streetAddress);
+		trySetProvince(province);
+		trySetNumber(phoneNumber);
+		trySetPostalCode(postalCode);
+		trySetAddress(streetAddress);
 	}
-
 	public void setStudentId (long stuId)
 	{
 		Student.stuId = stuId ++;
-		
 	}
-	public String getStudentId ()
+	public long getStudentId ()
 	{
-		return this.getStudentId();
+		return Student.stuId;
 	}
-	
+
 	public void setFirstName (String fName){
+		if (!trySetFirstName (fName))
+		{
+			try {
+				throw new InvalidInputException("Invalid First Name. Cannot contain numbers or symbols");
+			} catch (InvalidInputException e) {
+			}
+		}
 		this.firstName = fName;
 	}
 	public String getFirstName (){
@@ -39,6 +46,13 @@ public class Student {
 	}
 
 	public void setLastName (String lName){
+		if (!trySetLastName (lName))
+		{
+			try{
+				throw new InvalidInputException("INvalid last name. Cannot contain numbers or symbols");
+			}catch (InvalidInputException e){	
+			}
+		}
 		this.lastName = lName;
 	}
 	public String getLastName (){
@@ -47,10 +61,14 @@ public class Student {
 
 	public void setAddress (String address)
 	{
-		if (trySetAddress (address))
+		if (!trySetAddress (address))
 		{
-			System.out.println("Input another address");
+			try{
+				throw new InvalidInputException ("Invalid street Address.");
+			}catch (InvalidInputException e){
+			}
 		}
+
 		this.streetAddress = address;
 	}
 	public String getAddress (){
@@ -65,9 +83,10 @@ public class Student {
 	}
 
 	public void setProvince (String pName){
-		this.province = pName;
+		
+		this.province = trySetProvince(pName);
 	}
-	public String getProvince (){
+	public enumProvince getProvince (){
 		return this.province;
 	}
 
@@ -92,7 +111,7 @@ public class Student {
 
 	public void setBirthday (String bDay) throws InvalidInputException
 	{
-		if (!trySetBirthdate(bDay))
+		if (!trySetBirthday(bDay))
 		{
 			throw new InvalidInputException("Invalid Birth Date.");
 		}
@@ -101,16 +120,7 @@ public class Student {
 	public String getBirthday (){
 		return this.birthDate;
 	}
-
-	public void setStuNum (String sNum)
-	{
-		this.stuNum = sNum;
-	}
-	public String getStuNum()
-	{
-		return this.stuNum;
-	}
-
+	////////////////////////////////////////////////////trySet////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public static Boolean trySetAddress(String address)
 	{
 		char [] charStrNum = address.split(" ") [0].toCharArray();
@@ -186,7 +196,7 @@ public class Student {
 		}
 		return true;
 	}
-	public static Boolean trySetBirthdate (String bDay)
+	public static Boolean trySetBirthday (String bDay)
 	{
 		char [] charBDay= bDay.split("/")[0].toCharArray();
 
@@ -206,8 +216,119 @@ public class Student {
 		}
 		return true;
 	}
+
+	public enumProvince trySetProvince (String province) 
+	{
+		province = province.toLowerCase();
+
+		switch (province)
+		//http://www.comeexplorecanada.com/abbreviations.php
+		{//AB, BC, MB, NB, NL, NS, NT, NU, ON, PE, QC, SK, YT
+		case "ab":
+		case "alberta":
+			return enumProvince.AB;
+		case "bc":
+		case "british columbia":
+			return enumProvince.BC;
+		case "mb":
+		case "manitoba":
+			return enumProvince.MB;
+		case "nb":
+		case "new brunswick":
+			return enumProvince.NB;
+		case "nl":
+		case "newfoundland and labrador":
+		case "newfoundland":
+			return enumProvince.NL;
+		case "ns":
+		case "nova socia":
+			return enumProvince.NS;
+		case "nt":
+		case "northwest territorries":
+			return enumProvince.NT;
+		case "nu":
+		case "nunavut":
+			return enumProvince.NU;
+		case "on":
+		case "ontario":
+			return enumProvince.ON;
+		case "pe":
+		case "pei":	
+		case "prince edward island":
+			return enumProvince.PE;
+		case "qu":
+		case "quebec":
+			return enumProvince.QC;
+		case "sk":
+		case "saskatchewan":
+			return enumProvince.SK;
+		case "yt":
+		case "yukon":
+			return enumProvince.YT;
+		default:
+			try {
+
+				throw new InvalidInputException("Invalid province.");
+			} catch (InvalidInputException e) {
+				return null;
+			}
+		}
+	}
+	public Boolean trySetFirstName (String fName)
+	{
+		char [] charFName = fName.toCharArray();
+		if (! Character.isLetter(charFName [0]))
+		{
+			return false;
+		}
+		return true;
+	}
+
+	public Boolean trySetLastName (String lName)
+	{
+		char [] charLName = lName.toCharArray();
+		if (! Character.isLetter(charLName[0]))
+		{
+			return false;
+		}
+		return true;
+	}
+
+	/////////////////////////////////////////////////////trySet//////////////////////////////////////////////////////////////////////////////////////////////////////////	
 	public String toString()
 	{
 		return firstName + " / " +  lastName + " / " + streetAddress + " / " + city + " / " + province + " / " + postalCode + " / " + birthDate + " / " + stuNum + " / " + phoneNumber;
 	}
+	public boolean equals(Student tempStudent)
+	{
+		return (this.getStudentId() == tempStudent.getStudentId());
+	}
+
+	public int compareTo(Student student) {
+		Student tempStudent = (Student) student;
+
+		if (this.getLastName().compareToIgnoreCase(tempStudent.getLastName()) == 0)
+		{
+			if (this.getFirstName().compareToIgnoreCase(tempStudent.getFirstName()) == 0)
+			{
+				return 0;
+			}
+			else if (this.getFirstName().compareToIgnoreCase(tempStudent.getFirstName()) > 0)
+			{
+				return 1;
+			}
+			else 
+			{
+				return -1;
+			}
+		}
+		else if (this.getLastName().compareToIgnoreCase(tempStudent.getLastName()) > 0)
+		{
+			return 1;
+		}
+		else {
+			return -1;
+		}
+	}
+
 }
