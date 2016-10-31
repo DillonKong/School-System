@@ -2,128 +2,218 @@ package Kong;
 
 public class Student {
 
-	static long stuId = 324000000;
-	private String firstName, lastName, streetAddress, city, postalCode, birthDate, stuNum, phoneNumber;
+	public static long studentNumberConstant = 324000000;// Base starting student number
+	private String firstName, lastName, streetAddress, city, postalCode, birthDate, phoneNumber;
 	enumProvince province;
+	private long studentNumber = studentNumberConstant;
 
-	public Student() 
+	/**
+	 * Construct for if no information is inputed
+	 * @throws InvalidInputException
+	 */
+	public Student() throws InvalidInputException 
 	{
-
-	}
-	public Student(String firstName, String lastName, String birthDate, String city, String phoneNumber, String postalCode, String province, String streetAddress) throws InvalidInputException 
-	{
-		setStudentId (stuId);
-		trySetBirthday(birthDate);
-		trySetFirstName(firstName);
-		trySetLastName(lastName);
-		setCity("");
-		trySetProvince(province);
-		trySetNumber(phoneNumber);
-		trySetPostalCode(postalCode);
-		trySetAddress(streetAddress);
-	}
-	public void setStudentId (long stuId)
-	{
-		Student.stuId = stuId ++;
-	}
-	public long getStudentId ()
-	{
-		return Student.stuId;
-	}
-
-	public void setFirstName (String fName){
-		if (!trySetFirstName (fName))
-		{
-			try {
-				throw new InvalidInputException("Invalid First Name. Cannot contain numbers or symbols");
-			} catch (InvalidInputException e) {
-			}
+		try {
+			setBirthday("");
+		} catch (InvalidInputException e) {
 		}
+		setCity("");
+		setFirstName("");
+		setLastName("");
+		setNumber("");
+		try {
+			setPostalCode("");
+		} catch (InvalidInputException e) {
+		}
+		setProvince(enumProvince.NONE);
+		setAddress("");
+		setStudentNumber (++studentNumber);
+	}
+	/**
+	 * Construct for if all the variables are filled
+	 * @param firstName
+	 * @param lastName
+	 * @param birthDate
+	 * @param city
+	 * @param phoneNumber
+	 * @param postalCode
+	 * @param province
+	 * @param streetAddress
+	 * @throws InvalidInputException
+	 */
+	public Student(String firstName, String lastName, String birthDate, String city, String phoneNumber, String postalCode, enumProvince province, String streetAddress) throws InvalidInputException 
+	{
+		try{
+			setBirthday(birthDate);
+			setFirstName(firstName);
+			setLastName(lastName);
+			setCity(city);
+			setProvince(province);
+			setNumber(phoneNumber);
+			setPostalCode(postalCode);
+			setAddress(streetAddress);
+		} catch (InvalidInputException e) {
+		}
+		setStudentNumber (++studentNumber);
+	}
+	//////////////////////////////////////////////////////////setters and getters////////////////////////////////////
+	/**
+
+	 * Method is called to set the student number 
+	 * @param studentNmbr
+	 */
+	public void setStudentNumber (long studentNmbr)
+	{
+		if (SchoolSystem.getLastStudentNumber() > studentNumberConstant)
+		{
+			studentNmbr = SchoolSystem.getLastStudentNumber() + 1;
+		}
+		else 
+		{
+			studentNumber = studentNumberConstant ++;
+		}
+		this.studentNumber = studentNmbr;
+
+	}
+	/**
+	 * Method is called to return student number is needed
+	 * @return
+	 */
+	public long getStudentNumber ()
+	{
+		return studentNumber;
+	}
+	/**
+	 * Method is called to set first name if its correct
+	 * @param fName
+	 */
+	public void setFirstName (String fName){
+
 		this.firstName = fName;
 	}
+	/**
+	 * Method is called to return first name is needed
+	 * @return
+	 */
 	public String getFirstName (){
 		return this.firstName;
 	}
-
+	/**
+	 * Method is called to set last name if its correct
+	 * @param lName
+	 */
 	public void setLastName (String lName){
-		if (!trySetLastName (lName))
-		{
-			try{
-				throw new InvalidInputException("INvalid last name. Cannot contain numbers or symbols");
-			}catch (InvalidInputException e){	
-			}
-		}
 		this.lastName = lName;
 	}
+	/**
+	 * Method is called to return last name is needed
+	 * @return
+	 */
 	public String getLastName (){
 		return this.lastName;
 	}
-
+	/**
+	 * Method is called to set street address if its correct
+	 * @param address
+	 */
 	public void setAddress (String address)
 	{
-		if (!trySetAddress (address))
-		{
-			try{
-				throw new InvalidInputException ("Invalid street Address.");
-			}catch (InvalidInputException e){
-			}
-		}
-
 		this.streetAddress = address;
 	}
+	/**
+	 * Method is called to return street address is needed
+	 * @return
+	 */
 	public String getAddress (){
 		return this.streetAddress;
 	}
-
+	/**
+	 * Method is called to set city if its correct
+	 * @param cName
+	 */
 	public void setCity (String cName){
 		this.city = cName;
 	}
+	/**
+	 * Method is called to return city is needed
+	 * @return
+	 */
 	public String getCity (){
 		return this.city;
 	}
-
-	public void setProvince (String pName){
-		
-		this.province = trySetProvince(pName);
+	/**
+	 * Method is called to set province if its correct
+	 * @param pName
+	 */
+	public void setProvince (enumProvince pName){
+		this.province = pName;
 	}
+	/**
+	 * Method is called to return province is needed
+	 * @return
+	 */
 	public enumProvince getProvince (){
 		return this.province;
 	}
-
+	/**
+	 * Method is called to set postal code if its correct
+	 * @param pCode
+	 * @throws InvalidInputException
+	 */
 	public void setPostalCode (String pCode)throws InvalidInputException
 	{
-		if (trySetPostalCode (pCode))
-		{
-			throw new InvalidInputException("Invalid Postal Code.");
-		}
 		this.postalCode = pCode;
+
 	}
+	/**
+	 * Method is called to return postal code if needed
+	 * @return
+	 */
 	public String getPostalCode (){
 		return this.postalCode;
 	}
-
-	public void setNumber (String phoneNum){
+	/**
+	 * Method is called to set phone number if its correct
+	 * @param phoneNum
+	 */
+	public void setNumber (String phoneNum){		
 		this.phoneNumber = phoneNum;
+
+
 	}
+	/**
+	 * Method is called to return phone number if needed
+	 * @return
+	 */
 	public String getNumber () {
 		return this.phoneNumber;
 	}
-
+	/**
+	 * Method is called to set birthday if its correct
+	 * @param bDay
+	 * @throws InvalidInputException
+	 */
 	public void setBirthday (String bDay) throws InvalidInputException
 	{
-		if (!trySetBirthday(bDay))
-		{
-			throw new InvalidInputException("Invalid Birth Date.");
-		}
 		this.birthDate = bDay;
 	}
+	/**
+	 * Method is called to return birthday if needed
+	 * @return
+	 */
 	public String getBirthday (){
 		return this.birthDate;
 	}
-	////////////////////////////////////////////////////trySet////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public static Boolean trySetAddress(String address)
+	////////////////////////////////////////////////////trySet methods////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Method is called to make sure Street Address is correct
+	 * @param address
+	 * @return
+	 */
+	public static Boolean trySetAddress(String address) 
 	{
 		char [] charStrNum = address.split(" ") [0].toCharArray();
+
 		for (int i = 0; i < charStrNum.length; i ++)
 		{
 			if (!Character.isDigit(charStrNum[i]))
@@ -131,9 +221,15 @@ public class Student {
 				return false;
 			}
 		}
+
+
 		return true;
 	}
-
+	/**
+	 * Method is called to make sure postal code is correct
+	 * @param pCode
+	 * @return
+	 */
 	public static Boolean trySetPostalCode (String pCode)
 	{
 		if (pCode.length() == 6)
@@ -187,6 +283,11 @@ public class Student {
 		}
 		return true;
 	}
+	/**
+	 * Method is called to make sure phone number is correct
+	 * @param phoneNum
+	 * @return
+	 */
 	public static Boolean trySetNumber (String phoneNum)
 	{
 		char [] charPhoneNumber = phoneNum.split("-") [0].toCharArray();
@@ -196,6 +297,11 @@ public class Student {
 		}
 		return true;
 	}
+	/**
+	 * Method is called to make sure birthday is correct
+	 * @param bDay
+	 * @return
+	 */
 	public static Boolean trySetBirthday (String bDay)
 	{
 		char [] charBDay= bDay.split("/")[0].toCharArray();
@@ -207,103 +313,87 @@ public class Student {
 
 		return true;
 	}
-	public Boolean trySetStuNum (String sNum)
+	/**
+	 * Method is called to make sure province is correct
+	 * @param province
+	 * @return
+	 * @throws InvalidInputException
+	 */
+	public static Boolean trySetProvince (enumProvince province) throws InvalidInputException 
 	{
-		char [] charSNum = sNum.toCharArray();
-		if (! Character.isDigit(charSNum [0]) || sNum.length() > 9)
-		{
-			return false;
-		}
-		return true;
-	}
-
-	public enumProvince trySetProvince (String province) 
-	{
-		province = province.toLowerCase();
-
-		switch (province)
 		//http://www.comeexplorecanada.com/abbreviations.php
-		{//AB, BC, MB, NB, NL, NS, NT, NU, ON, PE, QC, SK, YT
-		case "ab":
-		case "alberta":
-			return enumProvince.AB;
-		case "bc":
-		case "british columbia":
-			return enumProvince.BC;
-		case "mb":
-		case "manitoba":
-			return enumProvince.MB;
-		case "nb":
-		case "new brunswick":
-			return enumProvince.NB;
-		case "nl":
-		case "newfoundland and labrador":
-		case "newfoundland":
-			return enumProvince.NL;
-		case "ns":
-		case "nova socia":
-			return enumProvince.NS;
-		case "nt":
-		case "northwest territorries":
-			return enumProvince.NT;
-		case "nu":
-		case "nunavut":
-			return enumProvince.NU;
-		case "on":
-		case "ontario":
-			return enumProvince.ON;
-		case "pe":
-		case "pei":	
-		case "prince edward island":
-			return enumProvince.PE;
-		case "qu":
-		case "quebec":
-			return enumProvince.QC;
-		case "sk":
-		case "saskatchewan":
-			return enumProvince.SK;
-		case "yt":
-		case "yukon":
-			return enumProvince.YT;
-		default:
-			try {
-
-				throw new InvalidInputException("Invalid province.");
-			} catch (InvalidInputException e) {
-				return null;
+		try{
+			if (province.equals(enumProvince.ALBERTA) || province.equals(enumProvince.BRITISHCOMUMBIA) || province.equals(enumProvince.MANITOBA) || province.equals(enumProvince.NEWBRUNSWICK) || province.equals(enumProvince.NEWFOUNDLANDANDLABRADOR) || province.equals(enumProvince.NORTHWESTTERRITORIES) || province.equals(enumProvince.NOVASCOTIA) || province.equals(enumProvince.NUNAVUT) || province.equals(enumProvince.ONTARIO) || province.equals(enumProvince.PRINCEEDWARDISLAND) || province.equals(enumProvince.QUEBEC) || province.equals(enumProvince.SASKATCHEWAN) || province.equals(enumProvince.YUKON)) {
+				return true;
 			}
+		}catch (NullPointerException e) {
 		}
+		return false;
 	}
-	public Boolean trySetFirstName (String fName)
+	/**
+	 * Method is called to make sure first name is correct
+	 * @param fName
+	 * @return
+	 */
+	public static Boolean trySetFirstName (String fName)
 	{
 		char [] charFName = fName.toCharArray();
 		if (! Character.isLetter(charFName [0]))
 		{
 			return false;
 		}
+
 		return true;
 	}
-
-	public Boolean trySetLastName (String lName)
+	/**
+	 * Method is called to make sure last name is correct
+	 * @param lName
+	 * @return
+	 */
+	public static Boolean trySetLastName (String lName)
 	{
 		char [] charLName = lName.toCharArray();
 		if (! Character.isLetter(charLName[0]))
 		{
 			return false;
 		}
+
 		return true;
 	}
-
-	/////////////////////////////////////////////////////trySet//////////////////////////////////////////////////////////////////////////////////////////////////////////	
+	/**
+	 * Method is called to make sure city is correct
+	 */
+	public static Boolean trySetCity (String cName)
+	{
+		char [] charCName = cName.toCharArray();
+		if (! Character.isLetter(charCName[0]))
+		{
+			return false;
+		}
+		return true;
+	}
+	/////////////////////////////////////////////////////Other//////////////////////////////////////////////////////////////////////////////////////////////////////////	
+	/**
+	 * Puts all student information into a single line
+	 */
 	public String toString()
 	{
-		return firstName + " / " +  lastName + " / " + streetAddress + " / " + city + " / " + province + " / " + postalCode + " / " + birthDate + " / " + stuNum + " / " + phoneNumber;
+		return studentNumber + " || " + firstName + " || " +  lastName + " || " + streetAddress + " || " + city + " || " + province + " || " + postalCode + " || " + birthDate + " || " + phoneNumber;
 	}
+	/**
+	 * Makes sure the temp student equals the actual student
+	 * @param tempStudent
+	 * @return
+	 */
 	public boolean equals(Student tempStudent)
 	{
-		return (this.getStudentId() == tempStudent.getStudentId());
+		return (this.getStudentNumber() == tempStudent.getStudentNumber());
 	}
-
+	/**
+	 * Compares first and last name for the student and the temp student
+	 * @param student
+	 * @return
+	 */
 	public int compareTo(Student student) {
 		Student tempStudent = (Student) student;
 

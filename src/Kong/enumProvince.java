@@ -1,5 +1,6 @@
 package Kong;
 
-public enum enumProvince {
-	AB, BC, MB, NB, NL, NS, NT, NU, ON, PE, QC, SK, YT
+public enum enumProvince {// List of all pre-set Canadian provinces and territories
+	ALBERTA, BRITISHCOMUMBIA, MANITOBA, NEWBRUNSWICK, NEWFOUNDLANDANDLABRADOR, NOVASCOTIA, NORTHWESTTERRITORIES, NUNAVUT, ONTARIO, PRINCEEDWARDISLAND, QUEBEC, SASKATCHEWAN, YUKON, NONE;
+
 }
