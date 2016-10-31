@@ -9,9 +9,11 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
-
-
-
+/*
+ * Dillon Kong
+ * 31/10/16
+ * class to manipulate data base
+ */
 public class SchoolSystem {
 
 	public static long lastStudentNumber = 0;
@@ -21,7 +23,7 @@ public class SchoolSystem {
 	public static void main (String[] args)
 	{
 		try {
-			mainScreen(0,0,0);
+			mainScreen(0,0,0,null);
 		} catch (InvalidInputException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -38,14 +40,14 @@ public class SchoolSystem {
 	 * @throws InvalidInputException
 	 * @throws IOException
 	 */
-	public static void mainScreen (int menu, int print, int remove) throws InvalidInputException, IOException
+	public static void mainScreen (int menu, int print, int remove, String search) throws InvalidInputException, IOException
 	{
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
 
 
 		System.out.println("Please choose one of the numbered options.");
-		System.out.println("1. Enter new student \n2. Print student \n3. Print all students \n4. Remove student \n5. Sort students \n6. Save student information \n7. Read from data base \n10. Quit");
+		System.out.println("1. Enter new student \n2. Print student \n3. Print all students \n4. Remove student \n5. Sort students \n6. Save student information \n7. Read from data base \n8. Search student \n10. Quit");
 		menu = scan.nextInt();
 
 		//If user doesn't input a number
@@ -94,7 +96,7 @@ public class SchoolSystem {
 				System.out.println("The database has less than 2 students inputted. 2 or more inputs are needed to sort.");
 			}
 			System.out.println("...COMPLETE...");
-			mainScreen(0,0,0);
+			mainScreen(0,0,0,null);
 
 		}
 		else if (menu == 6)
@@ -105,13 +107,21 @@ public class SchoolSystem {
 		{
 			loadFile();
 		}
-
+		else if (menu == 8)
+		{
+			System.out.println("Last name of student:");
+			String searchStu = scan.nextLine();
+			searchStudent(searchStu);
+		}
 		else if (menu == 10)
+		{
+			saveStudents();
 			System.exit(0);
+		}
 		else	
 		{
 			System.out.println("Invalid input.");
-			mainScreen(0,0,0);
+			mainScreen(0,0,0,null);
 		}
 
 	}
@@ -250,7 +260,7 @@ public class SchoolSystem {
 		}
 		System.out.println("COMPLETE");
 		System.out.println(" ");
-		mainScreen(0, 0, 0);
+		mainScreen(0, 0, 0 ,null);
 	}
 	/**
 	 * Method is called when user want to print a certain user
@@ -273,7 +283,7 @@ public class SchoolSystem {
 		System.out.println("Birth Date: " + studRecs.get(stuNum-1).getBirthday());
 		System.out.println("___________________________________");
 		System.out.println("");
-		mainScreen(0, 0, 0);
+		mainScreen(0, 0, 0 ,null);
 	}
 	/** 
 	 * Method is called when user wants to print all student profiles
@@ -298,7 +308,7 @@ public class SchoolSystem {
 			System.out.println("___________________________________");
 			System.out.println("");
 		}
-		mainScreen(0, 0, 0);
+		mainScreen(0, 0, 0,null);
 	}
 	/**
 	 * Method is called when user wants to remove certain student profile
@@ -310,14 +320,15 @@ public class SchoolSystem {
 	{
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner (System.in); 
+		System.out.println("Are you sure you'd like to remove?");
 		String response = scan.nextLine();
 		if (response.equalsIgnoreCase("yes"))
 		{
 			studRecs.remove(removeStu - 1);
-			mainScreen(0, 0, 0);
+			mainScreen(0, 0, 0,null);
 		}
 		else if (response.equalsIgnoreCase("no"))
-			mainScreen(0, 0, 0);
+			mainScreen(0, 0, 0,null);
 		else 
 			System.out.println("Are you sure you'd like to delete this student? (yes or no)");
 	}
@@ -329,7 +340,7 @@ public class SchoolSystem {
 	public static void saveStudents () throws IOException 
 	{
 		String fileName = "student_data_base.txt";
-		String studentNumber = "studentNumber.txt";
+		String studentNumber = "student_number.txt";
 		File file = new File(fileName);
 		File stuFile = new File(studentNumber);
 
@@ -340,7 +351,7 @@ public class SchoolSystem {
 
 		FileOutputStream wfn = new FileOutputStream(fileName);
 		PrintStream writeFile = new PrintStream(wfn);
-		FileOutputStream wsn = new FileOutputStream(fileName);
+		FileOutputStream wsn = new FileOutputStream(studentNumber);
 		PrintStream writeStuNum = new PrintStream(wsn);
 
 		writeStuNum.println(studRecs.get(studRecs.size() - 1).getStudentNumber());
@@ -352,7 +363,7 @@ public class SchoolSystem {
 		}
 		try {
 			System.out.println("...Succesfully saved...");
-			mainScreen(0,0,0);
+			mainScreen(0,0,0,null);
 		} catch (InvalidInputException e) {
 		}
 		wfn.close();
@@ -366,8 +377,8 @@ public class SchoolSystem {
 	{
 		ArrayList<Student> tempStudentList = null;
 		try{
-			String fileName = "worksplace/SchoolSystem/student_data_base.txt";
-			String studentNumber = "worksplace/SchoolSystem/studentNumber.txt";
+			String fileName = "student_data_base.txt";
+			String studentNumber = "studentNumber.txt";
 			File file = new File(fileName);
 			File stuFile = new File(studentNumber);
 			@SuppressWarnings("resource")
@@ -388,27 +399,24 @@ public class SchoolSystem {
 			String[] splitFile = studentInfo.split(" || ");
 
 
-			for (int i = 0; i < studRecs.size() - 1; i++) {
+			for (int i = 0; i < studRecs.size() - 1; i++) 
+			{
 				studRecs.remove(i);
 			}
 
-			for (int i = 0; i < (324000000 - lastStudentNumber); i ++)
+			for (int i = 0; i < (lastStudentNumber - 324000000); i ++)
 			{
-				//String[] nextLine = readFile.readLine().split(" || ");
-
-				tempStudentList.add(new Student(splitFile[0], splitFile[1], splitFile[2], splitFile[3], splitFile[4], splitFile[5], makeProvince(splitFile[6]), splitFile[7]));
+				tempStudentList.add(new Student(splitFile[0], splitFile[1], splitFile[6], splitFile[3], splitFile[7], splitFile[5], makeProvince(splitFile[4]), splitFile[2]));
 			}	
-
+			studRecs = tempStudentList;
 		}catch(IOException | InvalidInputException e){
 		}
-
 		try {
 			System.out.println("...Succesfully loaded...");
-			mainScreen(0,0,0);
+			mainScreen(0,0,0, null);
 		} catch (InvalidInputException e) {
 		} catch (IOException e) {
 		}
-		studRecs = tempStudentList;
 	}
 	/**
 	 * Method is called to make sure the inputed String is a province from the enum file with all the preset Canadian provinces.
@@ -477,5 +485,44 @@ public class SchoolSystem {
 	public static long getLastStudentNumber ()
 	{
 		return lastStudentNumber;
+	}
+	public static void searchStudent(String findStudent)
+	{
+		@SuppressWarnings("resource")
+		Scanner scan = new Scanner (System.in);
+
+		for (int i = 0; i < studRecs.size(); i ++)
+		{
+			if (studRecs.get(i).getLastName().equalsIgnoreCase(findStudent))
+			{
+				System.out.println("...FOUND...");
+				System.out.println("Would you like to \n1. Print this student \n2. Delete this student \n3. Return to home screen");
+				int choice = scan.nextInt();
+				if (choice == 1)
+				{
+					try {
+						printStudent(i);
+					} catch (InvalidInputException e) {
+					} catch (IOException e) {
+					}
+				}
+				else if (choice == 2)
+				{
+					try {
+						removeStudent(i);
+					} catch (InvalidInputException e) {
+					} catch (IOException e) {
+					}
+				}
+				else if (choice == 3)
+				{
+					try {
+						mainScreen(0,0,0,null);
+					} catch (InvalidInputException e) {
+					} catch (IOException e) {
+					}
+				}
+			}
+		}
 	}
 }

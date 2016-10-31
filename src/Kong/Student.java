@@ -1,14 +1,17 @@
 package Kong;
 
 public class Student {
-
+/*Dillon Kong
+ * 31/10/16
+ * Class that holds getters and setters
+ */
 	public static long studentNumberConstant = 324000000;// Base starting student number
 	private String firstName, lastName, streetAddress, city, postalCode, birthDate, phoneNumber;
 	enumProvince province;
 	private long studentNumber = studentNumberConstant;
 
 	/**
-	 * Construct for if no information is inputed
+	 * Construct for if no information is inputed. Sets all variables to blank
 	 * @throws InvalidInputException
 	 */
 	public Student() throws InvalidInputException 
@@ -56,7 +59,7 @@ public class Student {
 		}
 		setStudentNumber (++studentNumber);
 	}
-	//////////////////////////////////////////////////////////setters and getters////////////////////////////////////
+	//////////////////////////////////////////////////////////Setters and Getters////////////////////////////////////
 	/**
 
 	 * Method is called to set the student number 
@@ -337,8 +340,8 @@ public class Student {
 	 */
 	public static Boolean trySetFirstName (String fName)
 	{
-		char [] charFName = fName.toCharArray();
-		if (! Character.isLetter(charFName [0]))
+		char[]  charFName = fName.toCharArray();
+		if (!Character.isLetter(charFName [0] ))
 		{
 			return false;
 		}
@@ -378,7 +381,7 @@ public class Student {
 	 */
 	public String toString()
 	{
-		return studentNumber + " || " + firstName + " || " +  lastName + " || " + streetAddress + " || " + city + " || " + province + " || " + postalCode + " || " + birthDate + " || " + phoneNumber;
+		return  firstName + " || " +  lastName + " || " + streetAddress + " || " + city + " || " + province + " || " + postalCode + " || " + birthDate + " || " + phoneNumber;
 	}
 	/**
 	 * Makes sure the temp student equals the actual student
