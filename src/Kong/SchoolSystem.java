@@ -19,7 +19,6 @@ public class SchoolSystem {
 	public static long lastStudentNumber = 0;
 	static ArrayList <Student> studRecs = new ArrayList<Student> ();
 
-
 	public static void main (String[] args)
 	{
 		try {

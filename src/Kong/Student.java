@@ -1,10 +1,10 @@
 package Kong;
 
 public class Student {
-/*Dillon Kong
- * 31/10/16
- * Class that holds getters and setters
- */
+	/*Dillon Kong
+	 * 31/10/16
+	 * Class that holds getters and setters
+	 */
 	public static long studentNumberConstant = 324000000;// Base starting student number
 	private String firstName, lastName, streetAddress, city, postalCode, birthDate, phoneNumber;
 	enumProvince province;
@@ -179,10 +179,8 @@ public class Student {
 	 * Method is called to set phone number if its correct
 	 * @param phoneNum
 	 */
-	public void setNumber (String phoneNum){		
+	public void setNumber (String phoneNum){
 		this.phoneNumber = phoneNum;
-
-
 	}
 	/**
 	 * Method is called to return phone number if needed
@@ -423,5 +421,4 @@ public class Student {
 			return -1;
 		}
 	}
-
 }
